@@ -1,4 +1,6 @@
-# Chargehound ruby bindings [![Build Status](https://travis-ci.org/chargehound/chargehound-ruby.png?branch=master)](https://travis-ci.org/chargehound/chargehound-ruby)
+# Chargehound ruby bindings
+
+[![Build Status](https://travis-ci.org/chargehound/chargehound-ruby.svg?branch=master)](https://travis-ci.org/chargehound/chargehound-ruby)
 
 <!-- ## Installation
 
