@@ -15,9 +15,9 @@ require 'chargehound'
 Chargehound.api_key = '{ YOUR_API_KEY }'
 ```
 
-<!-- ## Resources
+## Resources
 
-[Disputes](https://www.chargehound.com/docs/?ruby#disputes) -->
+[Disputes](https://www.chargehound.com/docs/api/index.html?ruby#disputes)
 
 ## Development
 

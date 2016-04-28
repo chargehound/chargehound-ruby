@@ -3,14 +3,14 @@ require 'test_helper'
 get_headers = {
   'Accept' => 'application/json',
   'Authorization' => 'Basic QVBJX0tFWTo=',
-  'User-Agent' => 'Chargehound/v1 RubyBindings/1.0.0'
+  'User-Agent' => "Chargehound/v1 RubyBindings/#{Chargehound::VERSION}"
 }
 
 post_headers = {
   'Accept' => 'application/json',
   'Authorization' => 'Basic QVBJX0tFWTo=',
   'Content-Type' => 'application/json',
-  'User-Agent' => 'Chargehound/v1 RubyBindings/1.0.0'
+  'User-Agent' => "Chargehound/v1 RubyBindings/#{Chargehound::VERSION}"
 }
 
 dispute_update = {
