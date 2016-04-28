@@ -1,7 +1,6 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib'))
 
 require 'chargehound/version'
-require 'english'
 
 Gem::Specification.new do |spec|
   spec.name        = 'chargehound'
@@ -23,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 0.39'
   spec.add_development_dependency 'webmock', '~> 2.0.0.beta1'
 
-  spec.files         = `git ls-files`.split($RS)
+  spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^test/})
   spec.require_paths = ['lib']

@@ -1,2 +1,5 @@
-Methods/MethodLength:
+Metrics/MethodLength:
+  Enabled: false
+
+Style/SpecialGlobalVars:
   Enabled: false
