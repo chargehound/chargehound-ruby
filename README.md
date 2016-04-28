@@ -1,10 +1,10 @@
-# Chargehound ruby bindings
+# Chargehound Ruby bindings
 
-[![Build Status](https://travis-ci.org/chargehound/chargehound-ruby.svg?branch=master)](https://travis-ci.org/chargehound/chargehound-ruby)
+[![Build Status](https://travis-ci.org/chargehound/chargehound-ruby.svg?branch=master)](https://travis-ci.org/chargehound/chargehound-ruby) [![Gem Version](https://badge.fury.io/rb/chargehound.svg)](https://badge.fury.io/rb/chargehound)
 
-<!-- ## Installation
+## Installation
 
-`gem install chargehound` -->
+`gem install chargehound`
 
 ## Usage
 
