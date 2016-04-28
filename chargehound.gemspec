@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.8'
   spec.add_development_dependency 'rake', '~> 11.1'
   spec.add_development_dependency 'rubocop', '~> 0.39'
-  spec.add_development_dependency 'webmock', '~> 2.0.0.beta1'
+  spec.add_development_dependency 'webmock', '~> 2.0'
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
