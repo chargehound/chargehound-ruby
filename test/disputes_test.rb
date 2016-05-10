@@ -52,8 +52,10 @@ describe Chargehound::Disputes do
 
   it 'can submit a dispute' do
     stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/submit')
-           .with(headers: post_headers, body: dispute_update.to_json)
-           .to_return(body: dispute_response)
+           .with(headers: post_headers,
+                 body: dispute_update.to_json)
+           .to_return(body: dispute_response,
+                      status: 201)
 
     Chargehound::Disputes.submit('dp_123', dispute_update)
     assert_requested stub
