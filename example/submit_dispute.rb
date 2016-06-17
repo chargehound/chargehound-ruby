@@ -12,7 +12,25 @@ first = disputes['data'][0]
 submitted = Chargehound::Disputes.submit(first['id'],
                                          template: 'crowdfunding',
                                          fields: {
-                                           'customer_ip' => '100'
-                                         })
+                                           'customer_ip' => '0.0.0.0'
+                                         },
+                                         products: [{
+                                             name: 'Product Name 1',
+                                             description: 'Product Description (optional)',
+                                             image: 'Product Image URL (optional)',
+                                             sku: 'Stock Keeping Unit (optional)',
+                                             quantity: 1,
+                                             amount: 1000,
+                                             url: 'Product URL (optional)'
+                                           },{
+                                             name: 'Product Name 2',
+                                             description: 'Product Description (optional)',
+                                             image: 'Product Image URL (optional)',
+                                             sku: 'Stock Keeping Unit (optional)',
+                                             quantity: '10oz',
+                                             amount: 2000,
+                                             url: 'Product URL (optional)'
+                                           }
+                                         ])
 
 puts "Submitted with fields: #{submitted['fields']}"
