@@ -31,4 +31,10 @@ describe Chargehound do
     Chargehound::Disputes.list
     assert_requested stub
   end
+
+  it 'can set the timeout on the module' do
+    Chargehound.timeout = 3
+
+    assert_equal(3, Chargehound.timeout)
+  end
 end

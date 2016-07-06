@@ -37,4 +37,15 @@ describe Chargehound::ChargehoundError do
       assert_equal('(Status 400) Bad Request', error.to_s)
     end
   end
+
+  it 'should throw a typed error on timeout' do
+    stub_request(:any, 'https://api.chargehound.com/v1/disputes').to_timeout
+
+    begin
+      Chargehound::Disputes.list
+    rescue Chargehound::ChargehoundTimeoutError => error
+      assert(error.is_a?(Chargehound::ChargehoundTimeoutError))
+      assert_equal('Connection timed out', error.to_s)
+    end
+  end
 end
