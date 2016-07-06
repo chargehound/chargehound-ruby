@@ -50,7 +50,7 @@ module Chargehound
         method: http_method,
         headers: headers,
         params: query_params,
-        timeout: 3
+        timeout: 5
       }
       build_body req_opts, http_method, opts
       req_opts
