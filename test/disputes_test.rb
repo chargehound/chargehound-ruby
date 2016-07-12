@@ -15,8 +15,33 @@ post_headers = {
 
 dispute_update = {
   fields: {
-    'customer_name' => 'Susie'
+    customer_name: 'Susie'
   }
+}
+
+dispute_with_product_info_update = {
+  fields: {
+    customer_name: 'Susie'
+  },
+  products: [
+    {
+      name:        'Product Name 1',
+      description: 'Product Description (optional)',
+      image:       'Product Image URL (optional)',
+      sku:         'Stock Keeping Unit (optional)',
+      quantity:    1,
+      amount:      1000,
+      url:         'Product URL (optional)'
+    }, {
+      name:        'Product Name 2',
+      description: 'Product Description (optional)',
+      image:       'Product Image URL (optional)',
+      sku:         'Stock Keeping Unit (optional)',
+      quantity:    '10oz',
+      amount:      2000,
+      url:         'Product URL (optional)'
+    }
+  ]
 }
 
 dispute_response = {
@@ -61,12 +86,33 @@ describe Chargehound::Disputes do
     assert_requested stub
   end
 
+  it 'can submit a dispute with product data' do
+    stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/submit')
+           .with(headers: post_headers,
+                 body: dispute_with_product_info_update.to_json)
+           .to_return(body: dispute_response,
+                      status: 201)
+
+    Chargehound::Disputes.submit('dp_123', dispute_with_product_info_update)
+    assert_requested stub
+  end
+
   it 'can update a dispute' do
     stub = stub_request(:put, 'https://api.chargehound.com/v1/disputes/dp_123')
            .with(headers: post_headers, body: dispute_update.to_json)
            .to_return(body: dispute_response)
 
     Chargehound::Disputes.update('dp_123', dispute_update)
+    assert_requested stub
+  end
+
+  it 'can update a dispute with product data' do
+    stub = stub_request(:put, 'https://api.chargehound.com/v1/disputes/dp_123')
+           .with(headers: post_headers,
+                 body: dispute_with_product_info_update.to_json)
+           .to_return(body: dispute_response)
+
+    Chargehound::Disputes.update('dp_123', dispute_with_product_info_update)
     assert_requested stub
   end
 end
