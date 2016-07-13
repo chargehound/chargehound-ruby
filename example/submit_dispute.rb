@@ -18,35 +18,28 @@ submitted = Chargehound::Disputes.submit(first['id'],
                                          },
                                          products: [
                                            {
-                                             name:
-                                               'Product Name 1',
+                                             name: 'Saxophone',
                                              description:
-                                               'Product Description (optional)',
+                                               'Alto saxophone, ' \
+                                               'with carrying case',
                                              image:
-                                               'Product Image URL (optional)',
-                                             sku:
-                                               'Stock Keeping Unit (optional)',
-                                             quantity:
-                                               1,
-                                             amount:
-                                               1000,
-                                             url:
-                                               'Product URL (optional)'
+                                               'http://s3.amazonaws.com/' \
+                                               'chargehound/saxophone.png',
+                                             sku: '17283001272',
+                                             quantity: 1,
+                                             amount: 20_000,
+                                             url: 'http://www.example.com'
                                            }, {
-                                             name:
-                                               'Product Name 2',
+                                             name: 'Milk',
                                              description:
-                                               'Product Description (optional)',
+                                               'Semi-skimmed Organic',
                                              image:
-                                               'Product Image URL (optional)',
-                                             sku:
-                                               'Stock Keeping Unit (optional)',
-                                             quantity:
-                                               '10oz',
-                                             amount:
-                                               2000,
-                                             url:
-                                               'Product URL (optional)'
+                                               'http://s3.amazonaws.com/' \
+                                               'chargehound/milk.png',
+                                             sku: '26377382910',
+                                             quantity: '64oz',
+                                             amount: 400,
+                                             url: 'http://www.example.com'
                                            }
                                          ])
 
