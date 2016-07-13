@@ -46,3 +46,4 @@ To deploy a new version of the SDK, perform the following steps:
    ```gem build chargehound.gemspec```
  4. Deploy the new gemfile to rubygems with:
    ``` gem push <name_of_generated_gem>```
+ 5. Confirm the new gem version is available at [https://rubygems.org/gems/chargehound](https://rubygems.org/gems/chargehound)
