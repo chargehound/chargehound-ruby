@@ -35,3 +35,15 @@ Run tests:
 ```bash
 $ bundle exec rake
 ```
+
+## Deployment
+
+To deploy a new version of the SDK, perform the following steps:
+
+ 1. Update the CHANGELOG to describe what feature have been added.
+ 2. Bump the version number in `/lib/chargehound/version.rb`
+ 3. Rebuild the gem with:
+   ```gem build chargehound.gemspec```
+ 4. Deploy the new gemfile to rubygems with:
+   ``` gem push <name_of_generated_gem>```
+ 5. Confirm the new gem version is available at [https://rubygems.org/gems/chargehound](https://rubygems.org/gems/chargehound)

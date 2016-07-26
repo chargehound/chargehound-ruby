@@ -39,6 +39,8 @@ module Chargehound
     # @option update [String] :template The id of the template to use.
     # @option update [Object] :fields Key value pairs to hydrate the
     #   template's evidence fields.
+    # @option update [Object] :products List of products the customer
+    #   purchased.
     # @option update [String] :customer_name Update the customer name.
     #   Will also update the customer name in the evidence fields.
     # @option update [String] :customer_email Update the customer email.
@@ -56,6 +58,8 @@ module Chargehound
     # @option update [String] :template The id of the template to use.
     # @option update [Object] :fields Key value pairs to hydrate the template's
     #   evidence fields.
+    # @option update [Object] :products List of products the customer
+    #   purchased.
     # @option update [String] :customer_name Update the customer name.
     #   Will also update the customer name in the evidence fields.
     # @option update [String] :customer_email Update the customer email.

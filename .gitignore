@@ -3,3 +3,6 @@
 .bundle
 Gemfile.lock
 vendor
+.idea/
+*.iml
+*.gem
