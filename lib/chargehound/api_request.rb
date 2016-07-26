@@ -14,6 +14,8 @@ module Chargehound
     def run
       response = @request.run
 
+      raise ChargehoundError.create_timeout_error if response.timed_out?
+
       body = parse_request_body response.body
 
       unless response.success?
@@ -47,7 +49,8 @@ module Chargehound
       req_opts = {
         method: http_method,
         headers: headers,
-        params: query_params
+        params: query_params,
+        timeout: Chargehound.timeout
       }
       build_body req_opts, http_method, opts
       req_opts

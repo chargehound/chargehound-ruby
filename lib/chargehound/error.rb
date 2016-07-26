@@ -23,8 +23,13 @@ module Chargehound
         ChargehoundError.new(error)
       end
     end
+
+    def self.create_timeout_error
+      ChargehoundTimeoutError.new('Connection timed out')
+    end
   end
 
   class ChargehoundAuthenticationError < ChargehoundError; end
   class ChargehoundBadRequestError < ChargehoundError; end
+  class ChargehoundTimeoutError < StandardError; end
 end
