@@ -42,7 +42,7 @@ module Chargehound
     # @option update [Object] :products List of products the customer
     #   purchased.
     # @option update [String] :account_id Optionally pass an associated Stripe account id.
-    # @option update [String] :force Optionally force a submission (bypass the manual review filter).
+    # @option update [Boolean] :force Optionally force a submission (bypass the manual review filter).
     #   Must be a valid email address.
     # @return [Dispute]
     def self.submit(dispute_id, update = {})
