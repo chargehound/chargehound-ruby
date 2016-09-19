@@ -41,10 +41,8 @@ module Chargehound
     #   template's evidence fields.
     # @option update [Object] :products List of products the customer
     #   purchased.
-    # @option update [String] :customer_name Update the customer name.
-    #   Will also update the customer name in the evidence fields.
-    # @option update [String] :customer_email Update the customer email.
-    #   Will also update the customer email in the evidence fields.
+    # @option update [String] :account_id Optionally pass an associated Stripe account id.
+    # @option update [String] :force Optionally force a submission (bypass the manual review filter).
     #   Must be a valid email address.
     # @return [Dispute]
     def self.submit(dispute_id, update = {})
@@ -60,11 +58,7 @@ module Chargehound
     #   evidence fields.
     # @option update [Object] :products List of products the customer
     #   purchased.
-    # @option update [String] :customer_name Update the customer name.
-    #   Will also update the customer name in the evidence fields.
-    # @option update [String] :customer_email Update the customer email.
-    #   Will also update the customer email in the evidence fields.
-    #   Must be a valid email address.
+    # @option update [String] :account_id Optionally pass an associated Stripe account id.
     # @return [Dispute]
     def self.update(dispute_id, update = {})
       ApiRequest.new(:put, "disputes/#{dispute_id}", body: update).run
