@@ -57,6 +57,15 @@ describe Chargehound::Disputes do
     WebMock.reset!
   end
 
+  it 'can expose the response status code' do
+    stub_request(:get, 'https://api.chargehound.com/v1/disputes')
+      .with(headers: get_headers)
+      .to_return(body: dispute_response)
+
+    response = Chargehound::Disputes.list
+    assert_equal('200', response[:response][:code])
+  end
+
   it 'can list disputes' do
     stub = stub_request(:get, 'https://api.chargehound.com/v1/disputes')
            .with(headers: get_headers)
