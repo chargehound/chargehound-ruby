@@ -3,8 +3,8 @@ require 'chargehound/api_request'
 module Chargehound
   # Access the Chargehound dispute resource
   class Disputes
-    def self.create(body = {}, params = {})
-      ApiRequest.new(:post, 'disputes', body: body,  query_params: params).run
+    def self.create(create = {}, params = {})
+      ApiRequest.new(:post, 'disputes', body: create, query_params: params).run
     end
 
     # A list of disputes
@@ -45,14 +45,11 @@ module Chargehound
     #   template's evidence fields.
     # @option update [Object] :products List of products the customer
     #   purchased.
-    # @option update [String] :customer_name Update the customer name.
-    #   Will also update the customer name in the evidence fields.
-    # @option update [String] :customer_email Update the customer email.
-    #   Will also update the customer email in the evidence fields.
-    #   Must be a valid email address.
+    # @option [Hash] params  Query params
     # @return [Dispute]
-    def self.submit(dispute_id, update = {})
-      ApiRequest.new(:post, "disputes/#{dispute_id}/submit", body: update).run
+    def self.submit(dispute_id, update = {}, params = {})
+      ApiRequest.new(:post, "disputes/#{dispute_id}/submit",
+                     body: update, query_params: params).run
     end
 
     # Updating a dispute
@@ -64,14 +61,11 @@ module Chargehound
     #   evidence fields.
     # @option update [Object] :products List of products the customer
     #   purchased.
-    # @option update [String] :customer_name Update the customer name.
-    #   Will also update the customer name in the evidence fields.
-    # @option update [String] :customer_email Update the customer email.
-    #   Will also update the customer email in the evidence fields.
-    #   Must be a valid email address.
+    # @option [Hash] params  Query params
     # @return [Dispute]
-    def self.update(dispute_id, update = {})
-      ApiRequest.new(:put, "disputes/#{dispute_id}", body: update).run
+    def self.update(dispute_id, update = {}, params = {})
+      ApiRequest.new(:put, "disputes/#{dispute_id}",
+                     body: update, query_params: params).run
     end
   end
 end
