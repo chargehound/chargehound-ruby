@@ -13,6 +13,10 @@ post_headers = {
   'User-Agent' => "Chargehound/v1 RubyBindings/#{Chargehound::VERSION}"
 }
 
+dispute_create = {
+  id: 'dp_123'
+}
+
 dispute_update = {
   fields: {
     customer_name: 'Susie'
@@ -45,8 +49,17 @@ dispute_with_product_info_update = {
 }
 
 dispute_response = {
-  'id' => 'dp_123'
-}.to_json
+  id: 'dp_123',
+  object: 'dispute'
+}
+
+dispute_list_response = {
+  object: 'list',
+  data: [{
+    id: 'dp_123',
+    object: 'dispute'
+  }]
+}
 
 describe Chargehound::Disputes do
   before do
@@ -58,18 +71,69 @@ describe Chargehound::Disputes do
   end
 
   it 'can expose the response status code' do
-    stub_request(:get, 'https://api.chargehound.com/v1/disputes')
-      .with(headers: get_headers)
-      .to_return(body: dispute_response)
+    stub = stub_request(:get, 'https://api.chargehound.com/v1/disputes')
+           .with(headers: get_headers)
+           .to_return(body: dispute_list_response.to_json)
 
-    response = Chargehound::Disputes.list
-    assert_equal('200', response[:response][:code])
+    list = Chargehound::Disputes.list
+    assert_requested stub
+    assert_equal('200', list.response.status)
+  end
+
+  it 'uses typed response objects' do
+    stub = stub_request(:get, 'https://api.chargehound.com/v1/disputes')
+           .with(headers: get_headers)
+           .to_return(body: dispute_list_response.to_json)
+
+    list = Chargehound::Disputes.list
+    assert_requested stub
+
+    assert_instance_of(Chargehound::List, list)
+    assert_instance_of(Chargehound::Dispute, list.data[0])
+
+    assert_equal('list', list.object)
+    assert_equal('dp_123', list.data[0].id)
+  end
+
+  it 'typed response objects can be JSON stringified' do
+    stub = stub_request(:get, 'https://api.chargehound.com/v1/disputes')
+           .with(headers: get_headers)
+           .to_return(body: dispute_list_response.to_json)
+
+    list = Chargehound::Disputes.list
+    assert_requested stub
+
+    list_hash = list.as_json
+    list_json = list.to_json
+
+    response = {
+      object: 'list',
+      data: [{
+        id: 'dp_123',
+        object: 'dispute'
+      }],
+      response: {
+        status: '200'
+      }
+    }
+
+    assert_equal(response, list_hash)
+    assert_equal(response.to_json, list_json)
+  end
+
+  it 'can create a dispute' do
+    stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes')
+           .with(headers: post_headers)
+           .to_return(body: dispute_response.to_json)
+
+    Chargehound::Disputes.create(dispute_create)
+    assert_requested stub
   end
 
   it 'can list disputes' do
     stub = stub_request(:get, 'https://api.chargehound.com/v1/disputes')
            .with(headers: get_headers)
-           .to_return(body: dispute_response)
+           .to_return(body: dispute_list_response.to_json)
 
     Chargehound::Disputes.list
     assert_requested stub
@@ -78,7 +142,7 @@ describe Chargehound::Disputes do
   it 'can retrieve a dispute' do
     stub = stub_request(:get, 'https://api.chargehound.com/v1/disputes/dp_123')
            .with(headers: get_headers)
-           .to_return(body: dispute_response)
+           .to_return(body: dispute_response.to_json)
 
     Chargehound::Disputes.retrieve('dp_123')
     assert_requested stub
@@ -88,7 +152,7 @@ describe Chargehound::Disputes do
     stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/submit')
            .with(headers: post_headers,
                  body: dispute_update.to_json)
-           .to_return(body: dispute_response,
+           .to_return(body: dispute_response.to_json,
                       status: 201)
 
     Chargehound::Disputes.submit('dp_123', dispute_update)
@@ -99,7 +163,7 @@ describe Chargehound::Disputes do
     stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/submit')
            .with(headers: post_headers,
                  body: dispute_with_product_info_update.to_json)
-           .to_return(body: dispute_response,
+           .to_return(body: dispute_response.to_json,
                       status: 201)
 
     Chargehound::Disputes.submit('dp_123', dispute_with_product_info_update)
@@ -109,7 +173,7 @@ describe Chargehound::Disputes do
   it 'can update a dispute' do
     stub = stub_request(:put, 'https://api.chargehound.com/v1/disputes/dp_123')
            .with(headers: post_headers, body: dispute_update.to_json)
-           .to_return(body: dispute_response)
+           .to_return(body: dispute_response.to_json)
 
     Chargehound::Disputes.update('dp_123', dispute_update)
     assert_requested stub
@@ -119,7 +183,7 @@ describe Chargehound::Disputes do
     stub = stub_request(:put, 'https://api.chargehound.com/v1/disputes/dp_123')
            .with(headers: post_headers,
                  body: dispute_with_product_info_update.to_json)
-           .to_return(body: dispute_response)
+           .to_return(body: dispute_response.to_json)
 
     Chargehound::Disputes.update('dp_123', dispute_with_product_info_update)
     assert_requested stub

@@ -3,6 +3,10 @@ require 'chargehound/api_request'
 module Chargehound
   # Access the Chargehound dispute resource
   class Disputes
+    def self.create(body = {}, params = {})
+      ApiRequest.new(:post, 'disputes', body: body,  query_params: params).run
+    end
+
     # A list of disputes
     # This endpoint will list all the disputes that we have synced from Stripe.
     # By default the disputes will be ordered by `created` with the most recent

@@ -1,9 +1,13 @@
+require 'chargehound/chargehound_objects'
 require 'chargehound/error'
 require 'chargehound/version'
 require 'json'
 require 'net/http'
 
 module Chargehound
+  # Expose response properties via this struct on response objects
+  Response = Struct.new(:status)
+
   # Send a request to the Chargehound API
   class ApiRequest
     def initialize(http_method, path, opts = {})
@@ -32,7 +36,7 @@ module Chargehound
       when Net::HTTPRequestTimeOut
         raise ChargehoundError.create_timeout_error
       else
-        body = parse_response response
+        body = JSON.parse response.body
         raise ChargehoundError.create_chargehound_error body
       end
     end
@@ -93,11 +97,23 @@ module Chargehound
       uri
     end
 
+    def convert(dict)
+      case dict['object']
+      when 'dispute'
+        Dispute.new(dict)
+      when 'list'
+        dict['data'].map! { |item| convert item }
+        list = List.new(dict)
+        list
+      else
+        ChargehoundObject.new
+      end
+    end
+
     def parse_response(response)
       body = JSON.parse response.body
-      body[:response] = {
-        code: response.code
-      }
+      body = convert body
+      body.response = Response.new(response.code)
       body
     end
   end
