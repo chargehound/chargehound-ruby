@@ -1,13 +1,10 @@
-require 'chargehound/chargehound_objects'
+require 'chargehound/models'
 require 'chargehound/error'
 require 'chargehound/version'
 require 'json'
 require 'net/http'
 
 module Chargehound
-  # Expose response properties via this struct on response objects
-  Response = Struct.new(:status)
-
   # Send a request to the Chargehound API
   class ApiRequest
     def initialize(http_method, path, opts = {})
@@ -100,6 +97,7 @@ module Chargehound
     def convert(dict)
       case dict['object']
       when 'dispute'
+        dict['products'].map! { |item| Product.new(item) }
         Dispute.new(dict)
       when 'list'
         dict['data'].map! { |item| convert item }

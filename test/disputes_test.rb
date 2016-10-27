@@ -48,16 +48,45 @@ dispute_with_product_info_update = {
   ]
 }
 
+dispute_with_product_info_response = {
+  id: 'dp_123',
+  object: 'dispute',
+  fields: {
+    customer_name: 'Susie'
+  },
+  products: [
+    {
+      name:        'Saxophone',
+      description: 'Alto saxophone, with carrying case',
+      image:       'http://s3.amazonaws.com/chargehound/saxophone.png',
+      sku:         '17283001272',
+      quantity:    1,
+      amount:      20_000,
+      url:         'http://www.example.com'
+    }, {
+      name:        'Milk',
+      description: 'Semi-skimmed Organic',
+      image:       'http://s3.amazonaws.com/chargehound/milk.png',
+      sku:         '26377382910',
+      quantity:    '64oz',
+      amount:      400,
+      url:         'http://www.example.com'
+    }
+  ]
+}
+
 dispute_response = {
   id: 'dp_123',
-  object: 'dispute'
+  object: 'dispute',
+  products: []
 }
 
 dispute_list_response = {
   object: 'list',
   data: [{
     id: 'dp_123',
-    object: 'dispute'
+    object: 'dispute',
+    products: []
   }]
 }
 
@@ -110,7 +139,8 @@ describe Chargehound::Disputes do
       object: 'list',
       data: [{
         id: 'dp_123',
-        object: 'dispute'
+        object: 'dispute',
+        products: []
       }],
       response: {
         status: '200'
@@ -163,10 +193,24 @@ describe Chargehound::Disputes do
     stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/submit')
            .with(headers: post_headers,
                  body: dispute_with_product_info_update.to_json)
-           .to_return(body: dispute_response.to_json,
+           .to_return(body: dispute_with_product_info_response.to_json,
                       status: 201)
 
     Chargehound::Disputes.submit('dp_123', dispute_with_product_info_update)
+    assert_requested stub
+  end
+
+  it 'has a model for product data' do
+    stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/submit')
+           .with(headers: post_headers,
+                 body: dispute_with_product_info_update.to_json)
+           .to_return(body: dispute_with_product_info_response.to_json,
+                      status: 201)
+
+    dispute = Chargehound::Disputes.submit('dp_123',
+                                           dispute_with_product_info_update)
+
+    assert_instance_of(Chargehound::Product, dispute.products[0])
     assert_requested stub
   end
 
