@@ -6,6 +6,6 @@
   - Added timeout option
 2.0.0 October, 2016
   - Add Dispute create method
+  - Expose response status codes
   - Drop CI support for Ruby 1.9.3
-  - Add models for response objects
-  - Expose response status code
+  - Add typed response models
