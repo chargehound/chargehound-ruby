@@ -28,6 +28,13 @@ module Chargehound
       ApiRequest.new(:get, "disputes/#{dispute_id}").run
     end
 
+    # Retrieve the response for a dispute.
+    # @param [String] dispute_id A dispute id
+    # @return [Dispute]
+    def self.response(dispute_id)
+      ApiRequest.new(:get, "disputes/#{dispute_id}/response").run
+    end
+
     # Submitting a dispute
     # You will want to submit the dispute through Chargehound after you recieve
     # a notification from Stripe of a new dispute. With one `POST` request

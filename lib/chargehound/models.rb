@@ -31,6 +31,9 @@ module Chargehound
   class Dispute < ChargehoundObject
   end
 
+  class Response < ChargehoundObject
+  end
+
   class List < ChargehoundObject
   end
 
@@ -38,5 +41,5 @@ module Chargehound
   end
 
   # Expose response properties via this struct on response objects
-  Response = Struct.new(:status)
+  HTTPResponse = Struct.new(:status)
 end

@@ -90,6 +90,11 @@ dispute_list_response = {
   }]
 }
 
+response_response = {
+  dispute_id: 'dp_123',
+  object: 'response'
+}
+
 describe Chargehound::Disputes do
   before do
     Chargehound.api_key = 'API_KEY'
@@ -175,6 +180,17 @@ describe Chargehound::Disputes do
            .to_return(body: dispute_response.to_json)
 
     Chargehound::Disputes.retrieve('dp_123')
+    assert_requested stub
+  end
+
+  it 'can retrieve a dispute response' do
+    stub = stub_request(:get, 'https://api.chargehound.com/v1/disputes/dp_123/response')
+           .with(headers: get_headers)
+           .to_return(body: response_response.to_json)
+
+    response = Chargehound::Disputes.response('dp_123')
+    assert_instance_of(Chargehound::Response, response)
+    assert_equal('dp_123', response.dispute_id)
     assert_requested stub
   end
 

@@ -103,6 +103,8 @@ module Chargehound
         dict['data'].map! { |item| convert item }
         list = List.new(dict)
         list
+      when 'response'
+        Response.new(dict)
       else
         ChargehoundObject.new
       end
@@ -111,7 +113,7 @@ module Chargehound
     def parse_response(response)
       body = JSON.parse response.body
       body = convert body
-      body.response = Response.new(response.code)
+      body.response = HTTPResponse.new(response.code)
       body
     end
   end
