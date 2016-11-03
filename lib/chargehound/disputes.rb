@@ -3,17 +3,18 @@ require 'chargehound/api_request'
 module Chargehound
   # Access the Chargehound dispute resource
   class Disputes
+    # Create a dispute
+    # @option [Hash] A dispute create object
+    # @return [Dispute]
+    def self.create(create = {})
+      ApiRequest.new(:post, 'disputes', body: create).run
+    end
+
     # A list of disputes
     # This endpoint will list all the disputes that we have synced from Stripe.
     # By default the disputes will be ordered by `created` with the most recent
     # dispute first. { }`has_more` will be `true` if more results are available.
-    # @option [Hash] params the optional parameters
-    # @option params [Float] :limit Maximum number of disputes to return.
-    #   Default is 20, maximum is 100.
-    # @option params [String] :starting_after A dispute id.
-    #   Fetch disputes created after this dispute.
-    # @option params [String] :ending_before A dispute id.
-    #   Fetch disputes created before this dispute.
+    # @option [Hash] params the query parameters
     # @return [Disputes]
     def self.list(params = {})
       ApiRequest.new(:get, 'disputes', query_params: params).run
@@ -21,10 +22,17 @@ module Chargehound
 
     # Retrieve a dispute
     # This endpoint will return a single dispute.
-    # @param dispute_id A dispute id
+    # @param [String] dispute_id A dispute id
     # @return [Dispute]
     def self.retrieve(dispute_id)
       ApiRequest.new(:get, "disputes/#{dispute_id}").run
+    end
+
+    # Retrieve the response for a dispute.
+    # @param [String] dispute_id A dispute id
+    # @return [Dispute]
+    def self.response(dispute_id)
+      ApiRequest.new(:get, "disputes/#{dispute_id}/response").run
     end
 
     # Submitting a dispute
@@ -36,32 +44,20 @@ module Chargehound
     # The dispute will also be in the submitted state.
     # @param dispute_id A dispute id
     # @option [Hash] update  A dispute update object
-    # @option update [String] :template The id of the template to use.
-    # @option update [Object] :fields Key value pairs to hydrate the
-    #   template's evidence fields.
-    # @option update [Object] :products List of products the customer
-    #   purchased.
-    # @option update [String] :account_id Optionally pass an associated Stripe account id.
-    # @option update [Boolean] :force Optionally force a submission (bypass the manual review filter).
-    #   Must be a valid email address.
     # @return [Dispute]
     def self.submit(dispute_id, update = {})
-      ApiRequest.new(:post, "disputes/#{dispute_id}/submit", body: update).run
+      ApiRequest.new(:post, "disputes/#{dispute_id}/submit",
+                     body: update).run
     end
 
     # Updating a dispute
     # You can update the template and the fields on a dispute.
     # @param dispute_id A dispute id
     # @option [Hash] update  A dispute update object
-    # @option update [String] :template The id of the template to use.
-    # @option update [Object] :fields Key value pairs to hydrate the template's
-    #   evidence fields.
-    # @option update [Object] :products List of products the customer
-    #   purchased.
-    # @option update [String] :account_id Optionally pass an associated Stripe account id.
     # @return [Dispute]
     def self.update(dispute_id, update = {})
-      ApiRequest.new(:put, "disputes/#{dispute_id}", body: update).run
+      ApiRequest.new(:put, "disputes/#{dispute_id}",
+                     body: update).run
     end
   end
 end

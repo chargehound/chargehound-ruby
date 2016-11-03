@@ -15,6 +15,33 @@ require 'chargehound'
 Chargehound.api_key = '{ YOUR_API_KEY }'
 ```
 
+### Requests
+
+Every resource is accessed via the Chargehound module.
+
+```ruby
+Chargehound::Disputes.submit('dp_123', {
+  fields: {
+    customer_name: 'Susie'
+  }
+})
+```
+
+### Responses
+
+Responses from the API are automatically parsed from JSON and returned as Ruby objects.
+
+Responses also include the HTTP status code on the response object as the status field.
+
+```ruby
+dispute = Chargehound::Disputes.retrieve('dp_123')
+
+puts dispute.state
+# 'needs_response'
+puts dispute.response.status
+# '200'
+```
+
 ## Documentation
 
 [Disputes](https://www.chargehound.com/docs/api/index.html?ruby#disputes)

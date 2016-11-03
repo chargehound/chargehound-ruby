@@ -1,8 +1,8 @@
-require 'base64'
+require 'chargehound/models'
 require 'chargehound/error'
 require 'chargehound/version'
 require 'json'
-require 'typhoeus'
+require 'net/http'
 
 module Chargehound
   # Send a request to the Chargehound API
@@ -12,68 +12,109 @@ module Chargehound
     end
 
     def run
-      response = @request.run
-
-      raise ChargehoundError.create_timeout_error if response.timed_out?
-
-      body = parse_request_body response.body
-
-      unless response.success?
-        raise ChargehoundError.create_chargehound_error body
+      host = @request.uri.host
+      port = @request.uri.port
+      Net::HTTP.start(host, port, build_http_opts) do |http|
+        begin
+          response = http.request @request
+          handle_response response
+        rescue Net::ReadTimeout
+          raise ChargehoundError.create_timeout_error
+        rescue Timeout::Error
+          raise ChargehoundError.create_timeout_error
+        end
       end
-
-      body
     end
 
-    def build_headers(opts)
+    def handle_response(response)
+      case response
+      when Net::HTTPSuccess
+        parse_response response
+      when Net::HTTPRequestTimeOut
+        raise ChargehoundError.create_timeout_error
+      else
+        body = JSON.parse response.body
+        raise ChargehoundError.create_chargehound_error body
+      end
+    end
+
+    def build_http_opts
+      {
+        use_ssl: true,
+        read_timeout: Chargehound.timeout
+      }
+    end
+
+    def build_headers(body)
       headers = {
         'Accept' => 'application/json',
-        'Authorization' =>
-          "Basic #{Base64.encode64(Chargehound.api_key + ':').chomp}",
         'User-Agent' => "Chargehound/v1 RubyBindings/#{VERSION}"
       }
-      opts[:body] && headers['Content-Type'] = 'application/json'
+      body && headers['Content-Type'] = 'application/json'
       headers
     end
 
-    def build_body(req_opts, http_method, opts)
-      if [:post, :patch, :put, :delete].include? http_method
-        req_body = build_request_body opts[:body]
-        req_opts.update body: req_body
+    def build_body(body)
+      body.to_json if body
+    end
+
+    def build_request_instance(http_method, uri, body, headers)
+      case http_method
+      when :get
+        Net::HTTP::Get.new uri, headers
+      when :put
+        req = Net::HTTP::Put.new uri, headers
+        req.body = body
+        req
+      when :post
+        req = Net::HTTP::Post.new uri, headers
+        req.body = body
+        req
       end
     end
 
-    def build_opts(http_method, opts)
-      query_params = opts[:query_params] || {}
-      headers = build_headers opts
-      req_opts = {
-        method: http_method,
-        headers: headers,
-        params: query_params,
-        timeout: Chargehound.timeout
-      }
-      build_body req_opts, http_method, opts
-      req_opts
-    end
-
     def build_request(http_method, path, opts = {})
-      url = build_request_url path
+      query_params = opts[:query_params] || {}
+      body = opts[:body]
       http_method = http_method.to_sym.downcase
-      req_opts = build_opts http_method, opts
 
-      Typhoeus::Request.new(url, req_opts)
+      uri = build_uri path, query_params
+      headers = build_headers body
+      body = build_body body
+
+      req = build_request_instance http_method, uri, body, headers
+      req.basic_auth Chargehound.api_key, ''
+      req
     end
 
-    def build_request_url(path)
-      'https://' + Chargehound.host + Chargehound.base_path + path
+    def build_uri(path, query_params)
+      url = 'https://' + Chargehound.host + Chargehound.base_path + path
+      uri = URI(url)
+      uri.query = URI.encode_www_form(query_params)
+      uri
     end
 
-    def build_request_body(body)
-      body.to_json
+    def convert(dict)
+      case dict['object']
+      when 'dispute'
+        dict['products'].map! { |item| Product.new(item) }
+        Dispute.new(dict)
+      when 'list'
+        dict['data'].map! { |item| convert item }
+        list = List.new(dict)
+        list
+      when 'response'
+        Response.new(dict)
+      else
+        ChargehoundObject.new
+      end
     end
 
-    def parse_request_body(body)
-      JSON.parse body
+    def parse_response(response)
+      body = JSON.parse response.body
+      body = convert body
+      body.response = HTTPResponse.new(response.code)
+      body
     end
   end
 end
