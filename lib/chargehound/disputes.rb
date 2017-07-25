@@ -59,5 +59,12 @@ module Chargehound
       ApiRequest.new(:put, "disputes/#{dispute_id}",
                      body: update).run
     end
+
+    # Accept a dispute and do not submit a response
+    # @param dispute_id A dispute id
+    # @return [Dispute]
+    def self.accept(dispute_id)
+      ApiRequest.new(:post, "disputes/#{dispute_id}/accept").run
+    end
   end
 end

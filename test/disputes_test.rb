@@ -205,6 +205,18 @@ describe Chargehound::Disputes do
     assert_requested stub
   end
 
+  it 'can accept a dispute' do
+    # Does not set content type b/c there is no body
+    headers = get_headers
+    stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/accept')
+           .with(headers: headers)
+           .to_return(body: dispute_response.to_json,
+                      status: 200)
+
+    Chargehound::Disputes.accept('dp_123')
+    assert_requested stub
+  end
+
   it 'can submit a dispute with product data' do
     stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/submit')
            .with(headers: post_headers,
