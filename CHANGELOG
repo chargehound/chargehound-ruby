@@ -10,3 +10,5 @@
   - Expose response status codes
   - Drop CI support for Ruby 1.9.3
   - Add typed response models
+2.1.0 July, 2017
+  - Add Accept endpoint
