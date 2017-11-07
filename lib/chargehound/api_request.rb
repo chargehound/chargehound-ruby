@@ -50,6 +50,9 @@ module Chargehound
         'Accept' => 'application/json',
         'User-Agent' => "Chargehound/v1 RubyBindings/#{VERSION}"
       }
+      unless Chargehound.version.nil?
+        headers['Chargehound-Version'] = Chargehound.version
+      end
       body && headers['Content-Type'] = 'application/json'
       headers
     end

@@ -12,3 +12,5 @@
   - Add typed response models
 2.1.0 July, 2017
   - Add Accept endpoint
+2.2.0 November, 2017
+  - Add support for overriding version
