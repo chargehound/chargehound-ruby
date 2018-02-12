@@ -14,3 +14,5 @@
   - Add Accept endpoint
 2.2.0 November, 2017
   - Add support for overriding version
+2.2.1 Febuary, 2018
+  - Update rubocop version
