@@ -19,7 +19,13 @@ describe Chargehound::ChargehoundError do
   it 'should propagate errors' do
     stub_request(:any, 'https://api.chargehound.com/v1/disputes').to_raise(StandardError)
 
-    assert_raises(StandardError, proc { Chargehound::Disputes.list })
+    # `assert_raises` has trouble on jruby,
+    # so we simply write the code
+    begin
+      Chargehound::Disputes.list
+    rescue StandardError => error
+      assert(error.is_a?(StandardError))
+    end
   end
 
   it 'should return typed chargehound errors from the API' do
