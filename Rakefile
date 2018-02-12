@@ -9,4 +9,4 @@ Rake::TestTask.new do |test|
   test.pattern = './test/**/*_test.rb'
 end
 
-task default: [:rubocop, :test]
+task default: %i[rubocop test]

@@ -1,5 +1,11 @@
 Metrics/MethodLength:
   Enabled: false
 
+Metrics/BlockLength:
+  Enabled: false
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
 Style/SpecialGlobalVars:
   Enabled: false
