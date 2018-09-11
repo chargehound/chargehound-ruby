@@ -11,7 +11,8 @@ module Chargehound
     end
 
     # A list of disputes
-    # This endpoint will list all the disputes that we have synced from Stripe.
+    # This endpoint will list all the disputes that we have synced from your
+    # payment processor.
     # By default the disputes will be ordered by `created` with the most recent
     # dispute first. { }`has_more` will be `true` if more results are available.
     # @option [Hash] params the query parameters
@@ -37,9 +38,9 @@ module Chargehound
 
     # Submitting a dispute
     # You will want to submit the dispute through Chargehound after you recieve
-    # a notification from Stripe of a new dispute. With one `POST` request
-    # you can update a dispute with the evidence fields and send the generated
-    # response to Stripe.
+    # a webhook notification of a new dispute. With one `POST` request
+    # you can update a dispute with the evidence fields and submit the generated
+    # response.
     # The response will have a `201` status if the submit was successful.
     # The dispute will also be in the submitted state.
     # @param dispute_id A dispute id
