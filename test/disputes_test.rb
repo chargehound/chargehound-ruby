@@ -174,6 +174,24 @@ describe Chargehound::Disputes do
     assert_requested stub
   end
 
+  it 'can list disputes filtered by state' do
+    stub = stub_request(:get, 'https://api.chargehound.com/v1/disputes?state=needs_response')
+           .with(headers: get_headers)
+           .to_return(body: dispute_list_response.to_json)
+
+    Chargehound::Disputes.list(state: %w[needs_response])
+    assert_requested stub
+  end
+
+  it 'can list disputes filtered by multiple states' do
+    stub = stub_request(:get, 'https://api.chargehound.com/v1/disputes?state=needs_response&state=warning_needs_response')
+           .with(headers: get_headers)
+           .to_return(body: dispute_list_response.to_json)
+
+    Chargehound::Disputes.list(state: %w[needs_response warning_needs_response])
+    assert_requested stub
+  end
+
   it 'can retrieve a dispute' do
     stub = stub_request(:get, 'https://api.chargehound.com/v1/disputes/dp_123')
            .with(headers: get_headers)
