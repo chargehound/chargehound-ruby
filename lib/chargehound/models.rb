@@ -40,6 +40,9 @@ module Chargehound
   class Product < ChargehoundObject
   end
 
+  class Correspondence < ChargehoundObject
+  end
+
   # Expose response properties via this struct on response objects
   HTTPResponse = Struct.new(:status)
 end

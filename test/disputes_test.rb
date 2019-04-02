@@ -75,18 +75,60 @@ dispute_with_product_info_response = {
   ]
 }
 
-dispute_response = {
+dispute_with_correspondence_info_update = {
+  fields: {
+    customer_name: 'Susie'
+  },
+  correspondence: [
+    {
+      to: 'customer@example.com',
+      from: 'noreply@example.com',
+      subject: 'Your Order',
+      body: 'Your order was received.',
+      caption: 'Order confirmation email.'
+    }, {
+      to: 'customer@example.com',
+      from: 'noreply@example.com',
+      subject: 'Your Order',
+      body: 'Your order was delivered.',
+      caption: 'Delivery confirmation email.'
+    }
+  ]
+}
+
+dispute_with_correspondence_info_response = {
   id: 'dp_123',
   object: 'dispute',
-  products: []
+  fields: {
+    customer_name: 'Susie'
+  },
+  correspondence: [
+    {
+      to: 'customer@example.com',
+      from: 'noreply@example.com',
+      subject: 'Your Order',
+      body: 'Your order was received.',
+      caption: 'Order confirmation email.'
+    }, {
+      to: 'customer@example.com',
+      from: 'noreply@example.com',
+      subject: 'Your Order',
+      body: 'Your order was delivered.',
+      caption: 'Delivery confirmation email.'
+    }
+  ]
+}
+
+dispute_response = {
+  id: 'dp_123',
+  object: 'dispute'
 }
 
 dispute_list_response = {
   object: 'list',
   data: [{
     id: 'dp_123',
-    object: 'dispute',
-    products: []
+    object: 'dispute'
   }]
 }
 
@@ -145,7 +187,8 @@ describe Chargehound::Disputes do
       data: [{
         id: 'dp_123',
         object: 'dispute',
-        products: []
+        products: [],
+        correspondence: []
       }],
       response: {
         status: '200'
@@ -260,6 +303,33 @@ describe Chargehound::Disputes do
     assert_requested stub
   end
 
+  it 'can submit a dispute with correspondence data' do
+    stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/submit')
+           .with(headers: post_headers,
+                 body: dispute_with_correspondence_info_update.to_json)
+           .to_return(body: dispute_with_correspondence_info_response.to_json,
+                      status: 201)
+
+    Chargehound::Disputes.submit('dp_123',
+                                 dispute_with_correspondence_info_update)
+    assert_requested stub
+  end
+
+  it 'has a model for correspondence data' do
+    stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/submit')
+           .with(headers: post_headers,
+                 body: dispute_with_correspondence_info_update.to_json)
+           .to_return(body: dispute_with_correspondence_info_response.to_json,
+                      status: 201)
+
+    dispute = Chargehound::Disputes.submit(
+      'dp_123', dispute_with_correspondence_info_update
+    )
+
+    assert_instance_of(Chargehound::Correspondence, dispute.correspondence[0])
+    assert_requested stub
+  end
+
   it 'can update a dispute' do
     stub = stub_request(:put, 'https://api.chargehound.com/v1/disputes/dp_123')
            .with(headers: post_headers, body: dispute_update.to_json)
@@ -276,6 +346,17 @@ describe Chargehound::Disputes do
            .to_return(body: dispute_response.to_json)
 
     Chargehound::Disputes.update('dp_123', dispute_with_product_info_update)
+    assert_requested stub
+  end
+
+  it 'can update a dispute with correspondence data' do
+    stub = stub_request(:put, 'https://api.chargehound.com/v1/disputes/dp_123')
+           .with(headers: post_headers,
+                 body: dispute_with_correspondence_info_update.to_json)
+           .to_return(body: dispute_response.to_json)
+
+    Chargehound::Disputes.update('dp_123',
+                                 dispute_with_correspondence_info_update)
     assert_requested stub
   end
 end

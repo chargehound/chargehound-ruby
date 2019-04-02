@@ -12,3 +12,12 @@ Style/SymbolArray:
 
 Style/SpecialGlobalVars:
   Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false

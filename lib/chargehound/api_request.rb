@@ -39,10 +39,7 @@ module Chargehound
     end
 
     def build_http_opts
-      {
-        use_ssl: true,
-        read_timeout: Chargehound.timeout
-      }
+      { use_ssl: true, read_timeout: Chargehound.timeout }
     end
 
     def build_headers(body)
@@ -100,7 +97,12 @@ module Chargehound
     def convert(dict)
       case dict['object']
       when 'dispute'
-        dict['products'].map! { |item| Product.new(item) }
+        dict['products'] = dict.fetch('products', []).map { |item|
+          Product.new(item)
+        }
+        dict['correspondence'] = dict.fetch('correspondence', []).map { |item|
+          Correspondence.new(item)
+        }
         Dispute.new(dict)
       when 'list'
         dict['data'].map! { |item| convert item }
