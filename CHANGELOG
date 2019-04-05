@@ -18,3 +18,5 @@
   - Update rubocop version
 2.2.2 September, 2018
   - Update docs
+2.3.0 April, 2019
+  - Add Correspondence model
