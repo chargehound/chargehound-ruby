@@ -101,7 +101,7 @@ module Chargehound
           Product.new(item)
         }
         dict['correspondence'] = dict.fetch('correspondence', []).map { |item|
-          Correspondence.new(item)
+          CorrespondenceItem.new(item)
         }
         Dispute.new(dict)
       when 'list'

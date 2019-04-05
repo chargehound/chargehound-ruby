@@ -40,7 +40,7 @@ module Chargehound
   class Product < ChargehoundObject
   end
 
-  class Correspondence < ChargehoundObject
+  class CorrespondenceItem < ChargehoundObject
   end
 
   # Expose response properties via this struct on response objects

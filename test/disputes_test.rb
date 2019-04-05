@@ -326,7 +326,8 @@ describe Chargehound::Disputes do
       'dp_123', dispute_with_correspondence_info_update
     )
 
-    assert_instance_of(Chargehound::Correspondence, dispute.correspondence[0])
+    assert_instance_of(Chargehound::CorrespondenceItem,
+                       dispute.correspondence[0])
     assert_requested stub
   end
 
