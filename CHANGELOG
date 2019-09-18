@@ -20,3 +20,5 @@
   - Update docs
 2.3.0 April, 2019
   - Add Correspondence model
+2.4.0 Sept, 2019
+  - Add PastPayment model

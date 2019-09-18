@@ -103,6 +103,9 @@ module Chargehound
         dict['correspondence'] = dict.fetch('correspondence', []).map { |item|
           CorrespondenceItem.new(item)
         }
+        dict['past_payments'] = dict.fetch('past_payments', []).map { |item|
+          PastPayment.new(item)
+        }
         Dispute.new(dict)
       when 'list'
         dict['data'].map! { |item| convert item }
