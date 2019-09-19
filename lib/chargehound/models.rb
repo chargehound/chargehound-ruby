@@ -43,6 +43,9 @@ module Chargehound
   class CorrespondenceItem < ChargehoundObject
   end
 
+  class PastPayment < ChargehoundObject
+  end
+
   # Expose response properties via this struct on response objects
   HTTPResponse = Struct.new(:status)
 end

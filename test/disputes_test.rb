@@ -119,6 +119,46 @@ dispute_with_correspondence_info_response = {
   ]
 }
 
+dispute_with_past_payments_update = {
+  fields: {
+    customer_name: 'Susie'
+  },
+  past_payments: [
+    {
+      id: 'ch_1',
+      amount: 20_000,
+      currency: 'usd',
+      charged_at: '2019-09-10 11:09:41PM UTC'
+    }, {
+      id: 'ch_2',
+      amount: 50_000,
+      currency: 'usd',
+      charged_at: '2019-09-03 11:09:41PM UTC'
+    }
+  ]
+}
+
+dispute_with_past_payments_response = {
+  id: 'dp_123',
+  object: 'dispute',
+  fields: {
+    customer_name: 'Susie'
+  },
+  past_payments: [
+    {
+      id: 'ch_1',
+      amount: 20_000,
+      currency: 'usd',
+      charged_at: '2019-09-10 11:09:41PM UTC'
+    }, {
+      id: 'ch_2',
+      amount: 50_000,
+      currency: 'usd',
+      charged_at: '2019-09-03 11:09:41PM UTC'
+    }
+  ]
+}
+
 dispute_response = {
   id: 'dp_123',
   object: 'dispute'
@@ -188,7 +228,8 @@ describe Chargehound::Disputes do
         id: 'dp_123',
         object: 'dispute',
         products: [],
-        correspondence: []
+        correspondence: [],
+        past_payments: []
       }],
       response: {
         status: '200'
@@ -328,6 +369,31 @@ describe Chargehound::Disputes do
 
     assert_instance_of(Chargehound::CorrespondenceItem,
                        dispute.correspondence[0])
+    assert_requested stub
+  end
+
+  it 'can submit a dispute with past payments data' do
+    stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/submit')
+           .with(headers: post_headers,
+                 body: dispute_with_past_payments_update.to_json)
+           .to_return(body: dispute_with_past_payments_response.to_json,
+                      status: 201)
+
+    Chargehound::Disputes.submit('dp_123', dispute_with_past_payments_update)
+    assert_requested stub
+  end
+
+  it 'has a model for past payments data' do
+    stub = stub_request(:post, 'https://api.chargehound.com/v1/disputes/dp_123/submit')
+           .with(headers: post_headers,
+                 body: dispute_with_past_payments_update.to_json)
+           .to_return(body: dispute_with_past_payments_response.to_json,
+                      status: 201)
+
+    dispute = Chargehound::Disputes.submit('dp_123',
+                                           dispute_with_past_payments_update)
+
+    assert_instance_of(Chargehound::PastPayment, dispute.past_payments[0])
     assert_requested stub
   end
 
