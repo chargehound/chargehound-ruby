@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name        = 'chargehound'
   spec.version     = Chargehound::VERSION
   spec.platform    = Gem::Platform::RUBY
-  spec.required_ruby_version = '>= 1.9.3'
+  spec.required_ruby_version = '>= 2.0.0'
   spec.authors     = ['Chargehound']
   spec.email       = ['support@chargehound.com']
   spec.homepage    = 'https://www.chargehound.com'
@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'minitest', '~> 5.8'
-  spec.add_development_dependency 'rake', '~> 11.1'
+  spec.add_development_dependency 'rake', '~> 12.3'
   spec.add_development_dependency 'rubocop', '~> 0.49'
   spec.add_development_dependency 'webmock', '~> 2.3'
 
