@@ -1,0 +1,36 @@
+name: Test JRuby and older Rubies with RVM
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [ '2.0', '2.1', '2.2', '2.3', 'jruby-9.2.9.0', 'jruby-head' ]
+    name: Test Ruby ${{ matrix.ruby }}
+    steps:
+    - name: Install libraries
+      run: sudo apt install haveged
+    - uses: actions/checkout@v2
+    - name: Set up RVM
+      run: |
+        curl -sSL https://get.rvm.io | bash
+    - name: Set up Ruby
+      run: |
+        source $HOME/.rvm/scripts/rvm
+        rvm install ${{ matrix.ruby }} --binary
+        rvm --default use ${{ matrix.ruby }}
+    - name: Install dependencies
+      run: |
+        source $HOME/.rvm/scripts/rvm
+        gem install bundler --no-document
+        bundle install
+    - name: Run test
+      run: |
+        source $HOME/.rvm/scripts/rvm
+        rake test
