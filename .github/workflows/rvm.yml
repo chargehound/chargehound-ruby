@@ -1,4 +1,4 @@
-name: Test JRuby and older Rubies with RVM
+name: Ruby
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: [ '2.0', '2.1', '2.2', '2.3', 'jruby-9.2.9.0', 'jruby-head' ]
+        ruby: [ '2.0-head', '2.1-head', '2.2-head', '2.3-head', 'jruby-9.2.9.0', 'jruby-head' ]
     name: Test Ruby ${{ matrix.ruby }}
     steps:
     - name: Install libraries
