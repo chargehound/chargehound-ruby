@@ -6,6 +6,7 @@ module Chargehound
     def initialize(error_response)
       @message = error_response['message']
       @status = error_response['status']
+      @type = error_response['type']
       status_string = @status.nil? ? '' : "(Status #{@status}) "
       super("#{status_string}#{message}")
     end
