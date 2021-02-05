@@ -1,7 +1,7 @@
 module Chargehound
   # Cast Chargehound API errors to custom error types
   class ChargehoundError < StandardError
-    attr_reader :status, :message
+    attr_reader :status, :message, :type
 
     def initialize(error_response)
       @message = error_response['message']
