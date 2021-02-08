@@ -22,3 +22,5 @@
   - Add Correspondence model
 2.4.0 Sept, 2019
   - Add PastPayment model
+2.5.0 Feb, 2021
+  - Surface error types
