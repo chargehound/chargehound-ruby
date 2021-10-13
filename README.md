@@ -1,6 +1,6 @@
 # Chargehound Ruby bindings
 
-[![Build Status](https://travis-ci.org/chargehound/chargehound-ruby.svg?branch=master)](https://travis-ci.org/chargehound/chargehound-ruby) [![Gem Version](https://badge.fury.io/rb/chargehound.svg)](https://badge.fury.io/rb/chargehound)
+[![Build Status](https://github.com/chargehound/chargehound-ruby/actions/workflows/ruby.yml/badge.svg)](https://github.com/chargehound/chargehound-ruby/actions/workflows/ruby.yml) [![Gem Version](https://badge.fury.io/rb/chargehound.svg)](https://badge.fury.io/rb/chargehound)
 
 ## Installation
 
