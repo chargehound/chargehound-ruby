@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: [ 'jruby-9.2.9.0', 'jruby-head' ]
+        ruby: [ 'jruby' ]
     name: Test Ruby ${{ matrix.ruby }}
     steps:
     - name: Install libraries
@@ -23,7 +23,7 @@ jobs:
     - name: Set up Ruby
       run: |
         source $HOME/.rvm/scripts/rvm
-        rvm install ${{ matrix.ruby }} --binary
+        rvm install ${{ matrix.ruby }}
         rvm --default use ${{ matrix.ruby }}
     - name: Install dependencies
       run: |
